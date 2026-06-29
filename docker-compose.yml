@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # ---------------------------------------------
+  # دیتابیس اصلی ما (PostgreSQL)
+  # ---------------------------------------------
+  postgres:
+    image: postgres:15-alpine
+    container_name: nexus-flow-db
+    restart: always
+    environment:
+      POSTGRES_USER: nexus_admin
+      POSTGRES_PASSWORD: nexus_secret_pass
+      POSTGRES_DB: nexus_flow_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # ---------------------------------------------
+  # سیستم کش و صف پیام (Redis)
+  # ---------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: nexus-flow-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+# تعریف فضاهای ذخیره‌سازی دائمی (تا وقتی داکر خاموش میشه دیتاها پاک نشن)
+volumes:
+  postgres_data:
+  redis_data:
